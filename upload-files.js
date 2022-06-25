@@ -1,5 +1,3 @@
-var process = require('process').process;
-var minimist = require('minimist').minimist;
 var Web3Storage = require('web3.storage').Web3Storage;
 var getFilesFromPath = require('web3.storage').getFilesFromPath;
 var tmp = require('tmp');
