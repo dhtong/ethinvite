@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.18.1",
     "minimist": "^1.2.6",
+    "pg": "^8.7.3",
     "tmp": "^0.2.1",
     "web3.storage": "^4.3.0"
   }
