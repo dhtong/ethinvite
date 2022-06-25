@@ -5,6 +5,9 @@ var getFilesFromPath = require('web3.storage').getFilesFromPath;
 var tmp = require('tmp');
 var fs = require('fs');
 
+// TODO test this
+const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
+
 async function upload(encryptedCalFilePath, encryptedAESKey) {
   const aesFilePath = createTmpAESFileFor(encryptedAESKey);
   return await uploadEncrypted('README.md', aesFilePath);
@@ -18,7 +21,7 @@ function createTmpAESFileFor(encryptedKey) {
 
 // filePath: tmp file path to encrypted ics file
 async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
-  const storage = new Web3Storage({ process.env.WEB3_STORAGE_TOKEN });
+  const storage = new Web3Storage({ storageAPIToken });
   const files = [];
   const iscFile = await getFilesFromPath(encryptedCalFilePath);
   files.push(...iscFile);
