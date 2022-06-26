@@ -1,7 +1,7 @@
 import { Web3Storage } from 'web3.storage';
 import { getFilesFromPath } from 'web3.storage';
 import { fileSync } from 'tmp';
-import { writeFileSync } from 'fs';
+import fs from 'fs';
 
 // TODO test this
 const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
@@ -17,11 +17,11 @@ async function upload(encryptedCalString, encryptedAESKey) {
   return await uploadEncrypted(icsFiles, aesFiles);
 }
 
-function createTmpAESFileFor(encryptedKey) {
-  const tmpobj = fileSync();
-  writeFileSync(tmpobj.name, encryptedKey);
-  return tmpobj.name;
-}
+// function createTmpAESFileFor(encryptedKey) {
+//   const tmpobj = fileSync();
+//   writeFileSync(tmpobj.name, encryptedKey);
+//   return tmpobj.name;
+// }
 
 function makeFileObjects (content, name) {
   const blob = Buffer.from(content, 'utf8');
