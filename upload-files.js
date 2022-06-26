@@ -2,7 +2,6 @@ import { Web3Storage } from 'web3.storage';
 import { getFilesFromPath } from 'web3.storage';
 import { fileSync } from 'tmp';
 import { writeFileSync } from 'fs';
-import { recordCID } from './db';
 
 // TODO test this
 const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
@@ -19,11 +18,11 @@ function createTmpAESFileFor(encryptedKey) {
 }
 
 // filePath: tmp file path to encrypted ics file
-async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
+async function uploadEncrypted(encryptedCalFile, encryptedAESKeyFilePath) {
   const storage = new Web3Storage({ token: storageAPIToken });
   const files = [];
-  const iscFile = await getFilesFromPath(encryptedCalFilePath);
-  files.push(...iscFile);
+  // const iscFile = await getFilesFromPath(encryptedCalFilePath);
+  files.push(...encryptedCalFile);
   const aesFile = await getFilesFromPath(encryptedAESKeyFilePath);
   files.push(...aesFile);
 
