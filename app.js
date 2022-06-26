@@ -14,6 +14,8 @@ app.use(bodyparser.json({
   }
 }));
 
+var urlencodedParser = bodyparser.urlencoded({ extended: false })
+
 app.use(cors({origin: '*'}));
 
 // app.use(express.json());
@@ -35,7 +37,7 @@ app.post('/register', (req, res) => {
   // res.send("OK")
 });
 
-app.post('/ingestion', async (req, res) => {
+app.post('/ingestion', urlencodedParser, async (req, res) => {
   console.log(req.body)
   // if(req.body['attachment-1']['type'] == 'text/calendar') {
   //   filePath = req.body['attachment-1']['tempfile']
