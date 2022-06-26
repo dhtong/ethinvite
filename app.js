@@ -20,6 +20,7 @@ app.post('/isRegistered/:walletAddress', (req, res) => {
 });
 
 app.post('/ingestion', async (req, res) => {
+  console.log(req.params)
   if(req.params['attachment-1']['type'] == 'text/calendar') {
     filePath = req.params['attachment-1']['tempfile']
     await ipfsUpload.upload(filePath, "something")
