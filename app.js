@@ -5,6 +5,7 @@ import { publicKeyForWallet, register } from './db.js'
 import { upload } from './upload-files.js'
 import cors from 'cors';
 import multer from 'multer'
+import emailaddr from 'email-addresses'
 
 const app = express()
 const port = process.env.PORT
@@ -52,6 +53,10 @@ app.post('/register', jsonParser, async (req, res, next) => {
 
 app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // TODO add signature verification
+  const eAddr = emailaddr.parseOneAddress(req.body['To'])
+  const walletAddr = eAddr.local
+  console.log(walletAddr)
+
   console.log(Object.keys(req.body))
   const f = req.files['attachment-1'][0]
   if(f.originalname.endsWith('.ics')) {
