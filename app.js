@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyparser from 'body-parser'
-import { publicKeyForWallet, register, cidsForWallet, recordCID, getAESKeyForWallet } from './db.js'
+import { publicKeyForWallet, register, cidsForWallet, recordCID } from './db.js'
 // import { upload } from './upload-files.js'
 import { upload } from './upload-files.js'
 import cors from 'cors';
@@ -65,8 +65,9 @@ app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-
   const walletAddr = eAddr.local
   console.log(walletAddr)
 
-  const aesKey = await getAESKeyForWallet(walletAddr);
-  console.log('aesKey', aesKey);
+  const aesKey = await aesKeyForWallet(walletAddr);
+  const publicKey = await publicKeyForWallet(walletAddr);
+  console.log('wallet:', walletAddr, ' aesKey: ', aesKey, ' publicKey:', publicKey);
   const encryptedAESKey = ethEncrypt(aesKey, await publicKeyForWallet(walletAddr));
 
   console.log(Object.keys(req.body))
