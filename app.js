@@ -12,15 +12,15 @@ import { Readable } from  'stream';
 
 const app = express()
 const port = process.env.PORT
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '/tmp')
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, file.fieldname + '-' + uniqueSuffix + '.ics')
-  }
-})
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, '/tmp')
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//     cb(null, file.fieldname + '-' + uniqueSuffix + '.ics')
+//   }
+// })
 
 // var jsonParser = bodyparser.json()
 
@@ -58,7 +58,7 @@ app.post('/register', jsonParser, async (req, res, next) => {
   }
 });
 
-app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
+app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // TODO add signature verification
   console.log(`Recipient address: ${req.body['recipient']}`)
   const eAddr = emailaddr.parseOneAddress(req.body['recipient'])
