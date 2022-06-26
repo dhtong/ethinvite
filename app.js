@@ -5,6 +5,7 @@ import { publicKeyForWallet, register, cidsForWallet } from './db.js'
 import { upload } from './upload-files.js'
 import cors from 'cors';
 import multer from 'multer'
+import emailaddr from 'email-addresses'
 
 const app = express()
 const port = process.env.PORT
@@ -12,6 +13,10 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, '/tmp')
   },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix + '.ics')
+  }
 })
 
 // var jsonParser = bodyparser.json()
@@ -52,6 +57,13 @@ app.post('/register', jsonParser, async (req, res, next) => {
 
 app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // TODO add signature verification
+  console.log(req.body['To'])
+  console.log(req.body['recipient'])
+  const eAddr = emailaddr.parseOneAddress(req.body['To'])
+  const walletAddr = eAddr.local
+  console.log(walletAddr)
+
+  console.log(Object.keys(req.body))
   const f = req.files['attachment-1'][0]
   if(f.originalname.endsWith('.ics')) {
     await upload(req.files['attachment-1'][0].path, "AES KEY")
