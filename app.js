@@ -6,7 +6,13 @@ import cors from 'cors';
 
 const app = express()
 const port = process.env.PORT
-var jsonParser = bodyparser.json()
+// var jsonParser = bodyparser.json()
+
+app.use(bodyparser.json({
+  type(req) {
+    return true;
+  }
+}));
 
 app.use(cors({origin: '*'}));
 
@@ -21,7 +27,7 @@ app.get('/isRegistered/:walletAddress', (req, res) => {
   // res.json(isRegistered(req.params.walletAddress));
 });
 
-app.post('/register', jsonParser, (req, res) => {
+app.post('/register', (req, res) => {
   console.log("isRegistered", req.body);
   res.send(req.body);
   // const { walletAddress, publicKey } = req.body;
@@ -29,7 +35,7 @@ app.post('/register', jsonParser, (req, res) => {
   // res.send("OK")
 });
 
-app.post('/ingestion', jsonParser, async (req, res) => {
+app.post('/ingestion', async (req, res) => {
   console.log(req.body)
   // if(req.body['attachment-1']['type'] == 'text/calendar') {
   //   filePath = req.body['attachment-1']['tempfile']
