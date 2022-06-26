@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS aes_keys (
 )`);
 await client.query(`
 CREATE TABLE IF NOT EXISTS ipfs_cids (
-    id SERIAL PRIMARY KEY
+    id SERIAL PRIMARY KEY,
     wallet_address VARCHAR,
     ipfs_cid VARCHAR NOT NULL
 )`);
