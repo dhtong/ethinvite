@@ -20,12 +20,10 @@ CREATE TABLE IF NOT EXISTS ipfs_cids (
 )`);
 
 export const publicKeyForWallet = async (walletAddress) => {
-    console.log("chelllooo?", walletAddress);
     const existing = await client.query(
         'SELECT wallet_address, public_key FROM public_keys WHERE wallet_address = $1::text',
         [walletAddress],
     );
-    console.log("got form db:", existing);
     if (existing.rows.length == 0) {
         return null;
     }
@@ -38,7 +36,6 @@ export const publicKeyForWallet = async (walletAddress) => {
 
 export const register = async (walletAddress, publicKey) => {
     const registered = await publicKeyForWallet(walletAddress);
-    console.log('registered::: ', registered);
     if (registered != null) {
         console.warn(`${walletAddress} is already registered with a public key: ${registered}`);
         return null;
