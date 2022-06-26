@@ -6,7 +6,7 @@ import { setAESKeyForWallet, getAESKeyForWallet } from './db.js';
 export const aesKeyForWallet = async (walletAddress) => {
     const existing = await getAESKeyForWallet(walletAddress);
     if (existing != null) {
-        return Buffer.from(existing, 'hex');
+        return existing;
     }
     const newKey = randomBytes(32).toString('hex');
     await setAESKeyForWallet(walletAddress, newKey);
@@ -50,7 +50,7 @@ export const ethEncrypt = (payload, publicKey) => {
 
 export const aesEncrypt = (payload, aesKey) => {
     const iv = randomBytes(16);
-    const cipher = createCipheriv('aes-256-cbc', Buffer.from(aesKey), iv);
+    const cipher = createCipheriv('aes-256-cbc', Buffer.from(aesKey, 'hex'), iv);
     const encrypted = Buffer.concat([cipher.update(payload), cipher.final()]);
     return {iv: iv.toString('hex'), cipherText: encrypted.toString('hex')};
 }
