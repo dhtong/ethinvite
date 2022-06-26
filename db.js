@@ -1,12 +1,12 @@
 import pg from 'pg'
 
-const client = new pg.Client();
-await client.connect();
-await client.query(`
-CREATE TABLE IF NOT EXISTS public_keys (
-    wallet_address VARCHAR PRIMARY KEY,
-    public_key VARCHAR NOT NULL
-)`);
+// const client = new pg.Client();
+// await client.connect();
+// await client.query(`
+// CREATE TABLE IF NOT EXISTS public_keys (
+//     wallet_address VARCHAR PRIMARY KEY,
+//     public_key VARCHAR NOT NULL
+// )`);
 
 export const publicKeyForWallet = async (walletAddress) => {
     console.log("chelllooo?", walletAddress);
