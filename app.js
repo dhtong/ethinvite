@@ -1,9 +1,9 @@
 import express from 'express'
 import { isRegistered, register } from './db.js'
+import { upload } from './upload-files.js'
 
 const app = express()
 const port = process.env.PORT
-const ipfsUpload = require('./upload-files')
 
 app.use(express.json());
 
@@ -28,7 +28,7 @@ app.post('/ingestion', async (req, res) => {
   console.log(req.params)
   if(req.params['attachment-1']['type'] == 'text/calendar') {
     filePath = req.params['attachment-1']['tempfile']
-    await ipfsUpload.upload(filePath, "something")
+    await upload(filePath, "something")
   }
 })
 

@@ -1,7 +1,7 @@
-var Web3Storage = require('web3.storage').Web3Storage;
-var getFilesFromPath = require('web3.storage').getFilesFromPath;
-var tmp = require('tmp');
-var fs = require('fs');
+import { Web3Storage } from 'web3.storage';
+import { getFilesFromPath } from 'web3.storage';
+import { fileSync } from 'tmp';
+import { writeFileSync } from 'fs';
 
 // TODO test this
 const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
@@ -12,8 +12,8 @@ async function upload(encryptedCalFilePath, encryptedAESKey) {
 }
 
 function createTmpAESFileFor(encryptedKey) {
-  const tmpobj = tmp.fileSync();
-  fs.writeFileSync(tmpobj.name, encryptedKey);
+  const tmpobj = fileSync();
+  writeFileSync(tmpobj.name, encryptedKey);
   return tmpobj.name;
 }
 
@@ -31,4 +31,5 @@ async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
   return cid;
 }
 
-exports.upload = upload;
+const _upload = upload;
+export { _upload as upload };
