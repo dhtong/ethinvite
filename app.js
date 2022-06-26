@@ -60,9 +60,8 @@ app.post('/register', jsonParser, async (req, res, next) => {
 
 app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // TODO add signature verification
-  console.log(req.body['To'])
-  console.log(req.body['recipient'])
-  const eAddr = emailaddr.parseOneAddress(req.body['To'])
+  console.log(`Recipient address: ${req.body['recipient']}`)
+  const eAddr = emailaddr.parseOneAddress(req.body['recipient'])
   const walletAddr = eAddr.local
   console.log(walletAddr)
 
