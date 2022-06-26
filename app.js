@@ -60,28 +60,31 @@ app.post('/register', jsonParser, async (req, res, next) => {
 
 app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // TODO add signature verification
-  console.log(`Recipient address: ${req.body['recipient']}`)
-  const eAddr = emailaddr.parseOneAddress(req.body['recipient'])
-  const walletAddr = eAddr.local
-  console.log(walletAddr)
+  try {
+    console.log(`Recipient address: ${req.body['recipient']}`)
+    const eAddr = emailaddr.parseOneAddress(req.body['recipient'])
+    const walletAddr = eAddr.local
+    console.log(walletAddr)
 
-  const aesKey = await aesKeyForWallet(walletAddr);
-  const publicKey = (await publicKeyForWallet(walletAddr)).publicKey;
-  console.log('wallet:', walletAddr, ' aesKey: ', aesKey, ' publicKey:', publicKey);
-  const encryptedAESKey = ethEncrypt(aesKey, publicKey);
+    const aesKey = await aesKeyForWallet(walletAddr);
+    const publicKey = (await publicKeyForWallet(walletAddr)).publicKey;
+    console.log('wallet:', walletAddr, ' aesKey: ', aesKey, ' publicKey:', publicKey);
+    const encryptedAESKey = ethEncrypt(aesKey, publicKey);
 
-  const f = req.files['attachment-1'][0]
-  if(f.originalname.endsWith('.ics')) {
-    const jsonBlob = aesEncrypt(req.files['attachment-1'][0].buffer, aesKey)
-    // const stream = new Readable();
-    // stream.push(JSON.stringify(jsonBlob));
-    // stream.push(null);
-    // stream.name = req.files['attachment-1'][0].path;
-    const cid = await upload(JSON.stringify(jsonBlob), encryptedAESKey)
-    recordCID(walletAddr, cid);
+    const f = req.files['attachment-1'][0]
+    if(f.originalname.endsWith('.ics')) {
+      const jsonBlob = aesEncrypt(req.files['attachment-1'][0].buffer, aesKey)
+      // const stream = new Readable();
+      // stream.push(JSON.stringify(jsonBlob));
+      // stream.push(null);
+      // stream.name = req.files['attachment-1'][0].path;
+      const cid = await upload(JSON.stringify(jsonBlob), encryptedAESKey)
+      recordCID(walletAddr, cid);
+    }
+    res.send()
+  } catch (err) {
+    next(err);
   }
-  res.send()
-  // 
 })
 
 app.listen(port, () => {
