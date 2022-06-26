@@ -24,7 +24,7 @@ function createTmpAESFileFor(encryptedKey) {
 }
 
 function makeFileObjects (content, name) {
-  const blob = new Blob([content])
+  const blob = Buffer.from(content, 'utf8');
 
   const files = [
     new File([blob], name)
