@@ -7,6 +7,12 @@ import multer from 'multer'
 
 const app = express()
 const port = process.env.PORT
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/tmp')
+  },
+})
+
 // var jsonParser = bodyparser.json()
 
 // app.use(bodyparser.json({
@@ -36,9 +42,9 @@ app.post('/register', (req, res) => {
   // res.send("OK")
 });
 
-app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
+app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // console.log(req.body)
-  console.log(req.files['attachment-1'][0].path)
+  console.log(req.files['attachment-1'][0])
   // await upload(req.files['attachment-1'][0], "something")
   res.send()
   // 
