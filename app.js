@@ -36,8 +36,9 @@ app.post('/register', (req, res) => {
   // res.send("OK")
 });
 
-app.post('/ingestion', multer().any(), (req, res) => {
+app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), (req, res) => {
   // console.log(req.body)
+  console.log(req.files)
   console.log(Object.keys(req.body))
   console.log(req.body['attachment-count'])
   console.log(req.body['attachment-1'])
