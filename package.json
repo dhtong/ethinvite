@@ -13,6 +13,7 @@
     "@metamask/eth-sig-util": "^4.0.1",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "email-addresses": "^5.0.0",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^7.1.5",
