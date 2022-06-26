@@ -52,7 +52,7 @@ export const getAESKeyForWallet = async (walletAddress) => {
         [walletAddress],
     );
     if (existing.rows.length > 0) {
-        return rows[0].aes_key;
+        return existing.rows[0].aes_key;
     }
     return null;
 }
