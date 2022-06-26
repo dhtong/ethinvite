@@ -44,8 +44,8 @@ app.post('/register', (req, res) => {
 
 app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // console.log(req.body)
-  console.log(req.files['attachment-1'][0])
-  // await upload(req.files['attachment-1'][0], "something")
+  // console.log(req.files['attachment-1'][0])
+  await upload(req.files['attachment-1'][0].path, "something")
   res.send()
   // 
 })
