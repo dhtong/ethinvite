@@ -2,6 +2,7 @@ import { Web3Storage } from 'web3.storage';
 import { getFilesFromPath } from 'web3.storage';
 import { fileSync } from 'tmp';
 import { writeFileSync } from 'fs';
+import { File } from 'web3.storage'
 
 // TODO test this
 const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
@@ -12,9 +13,9 @@ const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
 // }
 
 async function upload(encryptedCalString, encryptedAESKey) {
-  const aesFilePath = createTmpAESFileFor(encryptedAESKey);
-  const icsFilePath = createTmpAESFileFor(encryptedCalString);
-  return await uploadEncrypted(icsFilePath, aesFilePath);
+  const aesFile = makeFileObjects(encryptedAESKey, 'aes');
+  const icsFile = makeFileObjects(encryptedCalString, 'ics');
+  return await uploadEncrypted(icsFile, aesFile);
 }
 
 function createTmpAESFileFor(encryptedKey) {
@@ -23,14 +24,23 @@ function createTmpAESFileFor(encryptedKey) {
   return tmpobj.name;
 }
 
+function makeFileObjects (content, filename) {
+  const buffer = Buffer.from(content)
+
+  const files = [
+    new File([buffer], filename)
+  ]
+  return files
+}
+
 // filePath: tmp file path to encrypted ics file
-async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
+async function uploadEncrypted(encryptedCalFile, encryptedAESKeyFile) {
   const storage = new Web3Storage({ token: storageAPIToken });
   const files = [];
-  const iscFile = await getFilesFromPath(encryptedCalFilePath);
-  files.push(...iscFile);
-  const aesFile = await getFilesFromPath(encryptedAESKeyFilePath);
-  files.push(...aesFile);
+  // const iscFile = await getFilesFromPath(encryptedCalFile);
+  files.push(...encryptedCalFile);
+  // const aesFile = await getFilesFromPath(encryptedAESKeyFile);
+  files.push(...encryptedAESKeyFile);
 
   console.log(`Uploading ${files.length} files`);
   const cid = await storage.put(files);
