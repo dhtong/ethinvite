@@ -70,7 +70,6 @@ app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-
   console.log('wallet:', walletAddr, ' aesKey: ', aesKey, ' publicKey:', publicKey);
   const encryptedAESKey = ethEncrypt(aesKey, publicKey);
 
-  console.log(Object.keys(req.body))
   const f = req.files['attachment-1'][0]
   if(f.originalname.endsWith('.ics')) {
     const jsonBlob = aesEncrypt(req.files['attachment-1'][0].buffer, aesKey)

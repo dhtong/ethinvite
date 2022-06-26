@@ -75,7 +75,7 @@ export const cidsForWallet = async (walletAddress) => {
 
 export const recordCID = async (walletAddress, cid) => {
     return await client.query(
-        'INSERT INTO ipfs (wallet_address, ipfs_cid) VALUES ($1, $2)',
+        'INSERT INTO ipfs_cids (wallet_address, ipfs_cid) VALUES ($1, $2)',
         [walletAddress, cid]
     );
 };
