@@ -25,7 +25,7 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/ingestion', async (req, res) => {
-  console.log(req)
+  console.log(req.body)
   if(req.body['attachment-1']['type'] == 'text/calendar') {
     filePath = req.body['attachment-1']['tempfile']
     await upload(filePath, "something")
