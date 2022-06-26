@@ -8,7 +8,7 @@ const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
 
 async function upload(encryptedCalFilePath, encryptedAESKey) {
   const aesFilePath = createTmpAESFileFor(encryptedAESKey);
-  return await uploadEncrypted('README.md', aesFilePath);
+  return await uploadEncrypted(encryptedCalFilePath, aesFilePath);
 }
 
 function createTmpAESFileFor(encryptedKey) {

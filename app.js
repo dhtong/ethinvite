@@ -44,7 +44,10 @@ app.post('/register', (req, res) => {
 
 app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
   // TODO add signature verification
-  // await upload(req.files['attachment-1'][0].path, "something")
+  const f = req.files['attachment-1'][0]
+  if(f.originalname.endsWith('.ics')) {
+    await upload(req.files['attachment-1'][0].path, "AES KEY")
+  }
   res.send()
   // 
 })
