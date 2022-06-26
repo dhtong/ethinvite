@@ -8,13 +8,12 @@ const app = express()
 const port = process.env.PORT
 // var jsonParser = bodyparser.json()
 
-// app.use(bodyparser.json({
-//   type(req) {
-//     return true;
-//   }
-// }));
+app.use(bodyparser.json({
+  type(req) {
+    return true;
+  }
+}));
 
-var urlencodedParser = bodyparser.urlencoded({ extended: false })
 
 app.use(cors({origin: '*'}));
 
@@ -37,7 +36,7 @@ app.post('/register', (req, res) => {
   // res.send("OK")
 });
 
-app.post('/ingestion', urlencodedParser, async (req, res) => {
+app.post('/ingestionmime', async (req, res) => {
   console.log(req.body)
   // if(req.body['attachment-1']['type'] == 'text/calendar') {
   //   filePath = req.body['attachment-1']['tempfile']
