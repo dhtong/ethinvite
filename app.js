@@ -2,11 +2,19 @@ import express from 'express'
 import bodyparser from 'body-parser'
 import { publicKeyForWallet, register } from './db.js'
 // import { upload } from './upload-files.js'
+import { upload } from './upload-files.js'
 import cors from 'cors';
 import multer from 'multer'
 
 const app = express()
 const port = process.env.PORT
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/tmp')
+  },
+})
+
+// var jsonParser = bodyparser.json()
 
 let jsonParser = bodyparser.json({
   type(req) {
@@ -38,17 +46,14 @@ app.post('/register', jsonParser, async (req, res, next) => {
   }
 });
 
-app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), (req, res) => {
-  // console.log(req.body)
-  console.log(req.files)
-  console.log(Object.keys(req.body))
-  console.log(req.body['attachment-count'])
-  console.log(req.body['attachment-1'])
+app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-1', maxCount: 1 }]), async (req, res) => {
+  // TODO add signature verification
+  const f = req.files['attachment-1'][0]
+  if(f.originalname.endsWith('.ics')) {
+    await upload(req.files['attachment-1'][0].path, "AES KEY")
+  }
   res.send()
-  // if(req.body['attachment-1']['type'] == 'text/calendar') {
-  //   filePath = req.body['attachment-1']['tempfile']
-  //   await upload(filePath, "something")
-  // }
+  // 
 })
 
 app.listen(port, () => {
