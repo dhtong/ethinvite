@@ -66,11 +66,11 @@ export const setAESKeyForWallet = async (walletAddress, aesKey) => {
 };
 
 export const cidsForWallet = async (walletAddress) => {
-    const rows = await client.query(
+    const result = await client.query(
         'SELECT ipfs_cid FROM ipfs_cids WHERE wallet_address = $1::text',
         [walletAddress],
     );
-    return rows.map((row) => row.ipfs_cid);
+    return result.rows.map((row) => row.ipfs_cid);
 };
 
 export const recordCID = async (walletAddress, cid) => {
