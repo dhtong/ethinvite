@@ -63,7 +63,7 @@ export const getAESKeyForWallet = async (walletAddress) => {
 export const setAESKeyForWallet = async (walletAddress, aesKey) => {
     await client.query(
         'INSERT INTO aes_keys (wallet_address, aes_key) VALUES ($1, $2)',
-        [walletAddress, aesKey.as('hex')]
+        [walletAddress, aesKey]
     );
     return aesKey;
 };
