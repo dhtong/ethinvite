@@ -27,7 +27,8 @@ function createTmpAESFileFor(encryptedKey) {
 async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
   const storage = new Web3Storage({ token: storageAPIToken });
   const files = [];
-  const iscFile = await getFilesFromPath(encryptedCalFilePath);
+  var iscFile = await getFilesFromPath(encryptedCalFilePath);
+  iscFile.name = iscFile.name + "_ics"
   files.push(...iscFile);
   const aesFile = await getFilesFromPath(encryptedAESKeyFilePath);
   files.push(...aesFile);
