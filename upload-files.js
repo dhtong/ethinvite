@@ -2,6 +2,7 @@ import { Web3Storage } from 'web3.storage';
 import { getFilesFromPath } from 'web3.storage';
 import { fileSync } from 'tmp';
 import { writeFileSync } from 'fs';
+import { recordCID } from './db';
 
 // TODO test this
 const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;

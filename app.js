@@ -1,11 +1,14 @@
 import express from 'express'
 import bodyparser from 'body-parser'
-import { publicKeyForWallet, register, cidsForWallet } from './db.js'
+import { publicKeyForWallet, register, cidsForWallet, recordCID, getAESKeyForWallet } from './db.js'
 // import { upload } from './upload-files.js'
 import { upload } from './upload-files.js'
 import cors from 'cors';
 import multer from 'multer'
 import emailaddr from 'email-addresses'
+import { aesEncrypt, aesKeyForWallet, ethEncrypt } from './encrypt.js';
+import { Readable } from  'stream';
+
 
 const app = express()
 const port = process.env.PORT
@@ -63,10 +66,19 @@ app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-
   const walletAddr = eAddr.local
   console.log(walletAddr)
 
+  const aesKey = getAESKeyForWallet(walletAddr);
+  const encryptedAESKey = ethEncrypt(aesKey, await publicKeyForWallet(walletAddr));
+
   console.log(Object.keys(req.body))
   const f = req.files['attachment-1'][0]
   if(f.originalname.endsWith('.ics')) {
-    await upload(req.files['attachment-1'][0].path, "AES KEY")
+    const jsonBlob = aesEncrypt(req.files['attachment-1'][0].buffer, aesKey)
+    const stream = new Readable();
+    stream.push(JSON.stringify(jsonBlob));
+    stream.push(null);
+    stream.name = req.files['attachment-1'][0].path;
+    const cid = await upload(stream, encryptedAESKey)
+    recordCID(walletAddr, cid);
   }
   res.send()
   // 
