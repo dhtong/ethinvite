@@ -1,9 +1,11 @@
 import express from 'express'
+import bodyparser from 'body-parser'
 import { isRegistered, register } from './db.js'
 import { upload } from './upload-files.js'
 
 const app = express()
 const port = process.env.PORT
+var jsonParser = bodyparser.json()
 
 // app.use(express.json());
 
@@ -16,7 +18,7 @@ app.get('/isRegistered/:walletAddress', (req, res) => {
   // res.json(isRegistered(req.params.walletAddress));
 });
 
-app.post('/register', (req, res) => {
+app.post('/register', jsonParser, (req, res) => {
   console.log("isRegistered", req.body);
   res.send(req.body);
   // const { walletAddress, publicKey } = req.body;
@@ -24,12 +26,12 @@ app.post('/register', (req, res) => {
   // res.send("OK")
 });
 
-app.post('/ingestion', async (req, res) => {
+app.post('/ingestion', jsonParser, async (req, res) => {
   console.log(req.body)
-  if(req.body['attachment-1']['type'] == 'text/calendar') {
-    filePath = req.body['attachment-1']['tempfile']
-    await upload(filePath, "something")
-  }
+  // if(req.body['attachment-1']['type'] == 'text/calendar') {
+  //   filePath = req.body['attachment-1']['tempfile']
+  //   await upload(filePath, "something")
+  // }
 })
 
 app.listen(port, () => {
