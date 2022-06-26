@@ -1,7 +1,7 @@
 import express from 'express'
 import { isRegistered, register } from './db.js'
 import { upload } from './upload-files.js'
-import  { cors } from 'cors';
+import  cors from 'cors';
 
 const app = express()
 const port = process.env.PORT
