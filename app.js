@@ -72,11 +72,11 @@ app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-
   const f = req.files['attachment-1'][0]
   if(f.originalname.endsWith('.ics')) {
     const jsonBlob = aesEncrypt(req.files['attachment-1'][0].buffer, aesKey)
-    const stream = new Readable();
-    stream.push(JSON.stringify(jsonBlob));
-    stream.push(null);
-    stream.name = req.files['attachment-1'][0].path;
-    const cid = await upload(stream, encryptedAESKey)
+    // const stream = new Readable();
+    // stream.push(JSON.stringify(jsonBlob));
+    // stream.push(null);
+    // stream.name = req.files['attachment-1'][0].path;
+    const cid = await upload(JSON.stringify(jsonBlob), encryptedAESKey)
     recordCID(walletAddr, cid);
   }
   res.send()

@@ -6,9 +6,15 @@ import { writeFileSync } from 'fs';
 // TODO test this
 const storageAPIToken = process.env.WEB3_STORAGE_TOKEN;
 
-async function upload(encryptedCalFilePath, encryptedAESKey) {
+// async function upload(encryptedCalFilePath, encryptedAESKey) {
+//   const aesFilePath = createTmpAESFileFor(encryptedAESKey);
+//   return await uploadEncrypted(encryptedCalFilePath, aesFilePath);
+// }
+
+async function upload(encryptedCalString, encryptedAESKey) {
   const aesFilePath = createTmpAESFileFor(encryptedAESKey);
-  return await uploadEncrypted(encryptedCalFilePath, aesFilePath);
+  const icsFilePath = createTmpAESFileFor(encryptedCalString);
+  return await uploadEncrypted(icsFilePath, aesFilePath);
 }
 
 function createTmpAESFileFor(encryptedKey) {
@@ -18,11 +24,11 @@ function createTmpAESFileFor(encryptedKey) {
 }
 
 // filePath: tmp file path to encrypted ics file
-async function uploadEncrypted(encryptedCalFile, encryptedAESKeyFilePath) {
+async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
   const storage = new Web3Storage({ token: storageAPIToken });
   const files = [];
-  // const iscFile = await getFilesFromPath(encryptedCalFilePath);
-  files.push(...encryptedCalFile);
+  const iscFile = await getFilesFromPath(encryptedCalFilePath);
+  files.push(...iscFile);
   const aesFile = await getFilesFromPath(encryptedAESKeyFilePath);
   files.push(...aesFile);
 
