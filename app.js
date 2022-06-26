@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyparser from 'body-parser'
-import { publicKeyForWallet, register } from './db.js'
+import { publicKeyForWallet, register, cidsForWallet } from './db.js'
 // import { upload } from './upload-files.js'
 import { upload } from './upload-files.js'
 import cors from 'cors';
@@ -30,6 +30,10 @@ app.get('/', (req, res) => {
 
 app.get('/checkRegistered/:walletAddress', async (req, res) => {
   res.json(await publicKeyForWallet(req.params.walletAddress));
+});
+
+app.get('/ipfsCids/:walletAddress', async (req, res) => {
+  res.json(await cidsForWallet(req.params.walletAddress));
 });
 
 app.post('/register', jsonParser, async (req, res, next) => {
