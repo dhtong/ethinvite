@@ -1,11 +1,14 @@
 import express from 'express'
 import { isRegistered, register } from './db.js'
 import { upload } from './upload-files.js'
+import  { cors } from 'cors';
 
 const app = express()
 const port = process.env.PORT
 
-app.use(express.json());
+app.use(cors({origin: '*'}));
+
+// app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
