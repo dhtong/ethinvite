@@ -30,3 +30,5 @@ async function uploadEncrypted(encryptedCalFilePath, encryptedAESKeyFilePath) {
   const cid = await storage.put(files);
   return cid;
 }
+
+exports.upload = upload;
