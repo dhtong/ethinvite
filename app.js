@@ -8,11 +8,11 @@ const app = express()
 const port = process.env.PORT
 // var jsonParser = bodyparser.json()
 
-app.use(bodyparser.json({
-  type(req) {
-    return true;
-  }
-}));
+// app.use(bodyparser.json({
+//   type(req) {
+//     return true;
+//   }
+// }));
 
 var urlencodedParser = bodyparser.urlencoded({ extended: false })
 
