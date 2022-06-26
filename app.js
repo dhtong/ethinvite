@@ -1,11 +1,23 @@
-const express = require('express')
+import express from 'express'
+import { isRegistered, register } from './db'
+
 const app = express()
 const port = process.env.PORT
 const ipfsUpload = require('./upload-files')
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
-})
+});
+
+app.get('/isRegistered/:walletAddress', (req, res) => {
+  res.json(isRegistered(req.params.walletAddress));
+});
+
+app.post('/isRegistered/:walletAddress', (req, res) => {
+  const { walletAddress, publicKey } = req.body.json();
+  register(walletAddress, publicKey);
+  res.send("OK")
+});
 
 app.post('/ingestion', async (req, res) => {
   if(req.params['attachment-1']['type'] == 'text/calendar') {
@@ -15,5 +27,5 @@ app.post('/ingestion', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`app listening on port ${port}`)
 })
