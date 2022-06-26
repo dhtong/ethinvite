@@ -1,39 +1,41 @@
 import express from 'express'
 import bodyparser from 'body-parser'
-import { isRegistered, register } from './db.js'
+import { publicKeyForWallet, register } from './db.js'
 // import { upload } from './upload-files.js'
 import cors from 'cors';
 import multer from 'multer'
 
 const app = express()
 const port = process.env.PORT
-// var jsonParser = bodyparser.json()
 
-// app.use(bodyparser.json({
-//   type(req) {
-//     return true;
-//   }
-// }));
+let jsonParser = bodyparser.json({
+  type(req) {
+    return true;
+  }
+});
 
 app.use(cors({origin: '*'}));
-
-// app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
-app.get('/isRegistered/:walletAddress', (req, res) => {
-  res.json(false);
-  // res.json(isRegistered(req.params.walletAddress));
+app.get('/checkRegistered/:walletAddress', async (req, res) => {
+  res.json(await publicKeyForWallet(req.params.walletAddress));
 });
 
-app.post('/register', (req, res) => {
-  console.log("isRegistered", req.body);
-  res.send(req.body);
-  // const { walletAddress, publicKey } = req.body;
-  // register(walletAddress, publicKey);
-  // res.send("OK")
+app.post('/register', jsonParser, async (req, res, next) => {
+  try {
+    const { walletAddress, publicKey } = req.body;
+    const got = await register(walletAddress, publicKey);
+    if (got == null) {
+      res.send("ALREADY_REGISTERED")
+    } else {
+      res.send("OK")
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), (req, res) => {
