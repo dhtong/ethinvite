@@ -2,10 +2,13 @@ import express from 'express'
 import bodyparser from 'body-parser'
 import { isRegistered, register } from './db.js'
 import { upload } from './upload-files.js'
+import  cors from 'cors';
 
 const app = express()
 const port = process.env.PORT
 var jsonParser = bodyparser.json()
+
+app.use(cors({origin: '*'}));
 
 // app.use(express.json());
 
