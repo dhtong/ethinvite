@@ -65,7 +65,7 @@ app.post('/ingestion', multer({ storage: storage }).fields([{ name: 'attachment-
   const walletAddr = eAddr.local
   console.log(walletAddr)
 
-  const aesKey = getAESKeyForWallet(walletAddr);
+  const aesKey = await getAESKeyForWallet(walletAddr);
   const encryptedAESKey = ethEncrypt(aesKey, await publicKeyForWallet(walletAddr));
 
   console.log(Object.keys(req.body))
