@@ -8,7 +8,7 @@ export const aesKeyForWallet = async (walletAddress) => {
     if (existing != null) {
         return Buffer.from(existing, 'hex');
     }
-    const newKey = randomBytes(32).as('hex');
+    const newKey = randomBytes(32).toString('hex');
     await setAESKeyForWallet(walletAddress, newKey);
     return newKey;
 }
