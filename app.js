@@ -38,10 +38,10 @@ app.post('/register', (req, res) => {
 
 app.post('/ingestion', multer().fields([{ name: 'attachment-1', maxCount: 1 }]), (req, res) => {
   // console.log(req.body)
-  console.log(req.files)
-  console.log(Object.keys(req.body))
-  console.log(req.body['attachment-count'])
-  console.log(req.body['attachment-1'])
+  console.log(req.files['attachment-1'][0])
+  // console.log(Object.keys(req.body))
+  // console.log(req.body['attachment-count'])
+  // console.log(req.body['attachment-1'])
   res.send()
   // if(req.body['attachment-1']['type'] == 'text/calendar') {
   //   filePath = req.body['attachment-1']['tempfile']
